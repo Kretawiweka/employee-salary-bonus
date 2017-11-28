@@ -46,7 +46,7 @@ class DashboardIndex extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      isReset : false
+      zTotal: ''
     }
   }
 
@@ -56,18 +56,41 @@ class DashboardIndex extends React.Component{
     });
   }
 
+  handleReset = () => {
+    this.setState({
+      zTotal: ''
+    })
+  }
+
   handleSubmit(event) {
     event.preventDefault();    
     var masaKerja = this.state.masaKerja;
     var gajiPegawai = this.state.gajiPegawai;
+    this.setState({
+      zTotal: 10000
+    })
     this.fuzzyTsukamotoAlgorithm(masaKerja, gajiPegawai);
   }
 
   fuzzyTsukamotoAlgorithm(masaKerja, gajiPegawai){
     console.log('Masa Kerja: '+masaKerja+' || Gaji Pegawai: '+gajiPegawai)
-    console.log(this.masaKerjaBaru(masaKerja));    
+    var miu1 = this.miuRule1(masaKerja, gajiPegawai);
+    var z1 = this.zRule1(miu1);
+    var miu2 = this.miuRule2(masaKerja, gajiPegawai);
+    var z2 = this.zRule2(miu2);
+    var miu3 = this.miuRule3(masaKerja, gajiPegawai);
+    var z3 = this.zRule3(miu3);
+    var miu4 = this.miuRule4(masaKerja, gajiPegawai);
+    var z4 = this.zRule4(miu4);
+    var miu5 = this.miuRule5(masaKerja, gajiPegawai);
+    var z5 = this.zRule5(miu5);
+    var miu6 = this.miuRule6(masaKerja, gajiPegawai);
+    var z6 = this.zRule6(miu6);
+    var zTotalResult = this.zTotal(miu1, miu2, miu3, miu4, miu5, miu6, z1, z2, z3, z4, z5, z6);
+    this.setState({
+      zTotal: zTotalResult
+    })
   }
-
   //initial curve function
   //masa kerja
   masaKerjaBaru = (masaKerja) =>{
@@ -142,13 +165,15 @@ class DashboardIndex extends React.Component{
   //Rule 1 : Jika masa kerja baru dan gaji sedikit maka bonus sedikit
   miuRule1 = (masaKerja, gajiPegawai) => {
     let masaKerjaBaru = this.masaKerjaBaru(masaKerja);
+    console.log(masaKerjaBaru);
     let gajiPegawaiSedikit = this.gajiPegawaiSedikit(gajiPegawai);
+    console.log(gajiPegawaiSedikit)
     return Math.min(masaKerjaBaru, gajiPegawaiSedikit);
   }
-  kRule1 = (x) => {
+  zRule1 = (x) => {
     let gajiBanyak = 6000000;
     let gajiSedikit = 3000000;
-    return (gajiBanyak-x)/(gajiBanyak-gajiSedikit);
+    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
   }
   //Rule 2 : Jika masa kerja baru dan gaji banyak maka bonus sedikit
   miuRule2 = (masaKerja, gajiPegawai) => {
@@ -156,10 +181,10 @@ class DashboardIndex extends React.Component{
     let gajiPegawaiBanyak = this.gajiPegawaiBanyak(gajiPegawai);
     return Math.min(masaKerjaBaru, gajiPegawaiBanyak);    
   }
-  kRule2 = (x) => {
+  zRule2 = (x) => {
     let gajiBanyak = 6000000;
     let gajiSedikit = 3000000;
-    return (gajiBanyak-x)/(gajiBanyak-gajiSedikit);
+    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
   }
   //Rule 3 : Jika masa kerja sedang dan gaji sedikit maka bonus sedikit
   miuRule3 = (masaKerja, gajiPegawai) => {
@@ -167,10 +192,10 @@ class DashboardIndex extends React.Component{
     let gajiPegawaiSedikit = this.gajiPegawaiSedikit(gajiPegawai);
     return Math.min(masaKerjaSedang, gajiPegawaiSedikit);
   }
-  kRule3 = (x) => {
+  zRule3 = (x) => {
     let gajiBanyak = 6000000;
     let gajiSedikit = 3000000;
-    return (gajiBanyak-x)/(gajiBanyak-gajiSedikit);
+    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
   }
   //Rule 4 : Jika masa kerja sedang dan gaji banyak maka bonus banyak
   miuRule4 = (masaKerja, gajiPegawai) => {
@@ -178,10 +203,10 @@ class DashboardIndex extends React.Component{
     let gajiPegawaiBanyak = this.gajiPegawaiBanyak(gajiPegawai);
     return Math.min(masaKerjaSedang, gajiPegawaiBanyak); 
   }
-  kRule4 = (x) => {
+  zRule4 = (x) => {
     let gajiBanyak = 6000000;
     let gajiSedikit = 3000000;
-    return (x-gajiBanyak)/(gajiBanyak-gajiSedikit);
+    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
   }
   //Rule 5 : Jika masa kerja lama dan gaji sedikit maka bonus banyak
   miuRule5 = (masaKerja, gajiPegawai) => {
@@ -189,10 +214,10 @@ class DashboardIndex extends React.Component{
     let gajiPegawaiSedikit = this.gajiPegawaiSedikit(gajiPegawai);
     return Math.min(masaKerjaLama, gajiPegawaiSedikit); 
   }
-  kRule5 = (x) => {
+  zRule5 = (x) => {
     let gajiBanyak = 6000000;
     let gajiSedikit = 3000000;
-    return (x-gajiBanyak)/(gajiBanyak-gajiSedikit);
+    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
   }
   //Rule 6 : Jika masa kerja lama dan gaji banyak maka bonus banyak
   miuRule6 = (masaKerja, gajiPegawai) => {
@@ -200,14 +225,15 @@ class DashboardIndex extends React.Component{
     let gajiPegawaiBanyak = this.gajiPegawaiBanyak(gajiPegawai);
     return Math.min(masaKerjaLama, gajiPegawaiBanyak); 
   }
-  kRule6 = (x) => {
+  zRule6 = (x) => {
     let gajiBanyak = 6000000;
     let gajiSedikit = 3000000;
-    return (x-gajiBanyak)/(gajiBanyak-gajiSedikit);
+    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
   }
 
   zTotal = (miu1, miu2, miu3, miu4, miu5, miu6, z1, z2, z3, z4, z5, z6) => {
-    return null;
+    var zTotal = ((miu1*z1)+(miu2*z2)+(miu3*z3)+(miu4*z4)+(miu5*z5)+(miu6*z6))/(miu1+miu2+miu3+miu4+miu5+miu6);
+    return zTotal;
   };
   
   render(){
@@ -245,6 +271,7 @@ class DashboardIndex extends React.Component{
                             className: classes.textInput,
                           }}
                           placeholder="masa kerja pegawai (dalam tahun)"
+                          required
                         />  
                       </FormControl>
                       <FormControl fullWidth className={classes.formControl}>
@@ -261,6 +288,7 @@ class DashboardIndex extends React.Component{
                             className: classes.textInput
                           }}
                           placeholder="gaji pegawai per bulan (dalam rupiah)"
+                          required
                         />
                       </FormControl>
                       <Grid container spacing={24}>
@@ -292,8 +320,12 @@ class DashboardIndex extends React.Component{
                       </Typography>
                     </FormControl>                    
                     <FormControl fullWidth className={classes.formControl}>
-                      <Typography type="headline" gutterBottom>
-                        Rp 1000000
+                      <Typography 
+                        type="headline" 
+                        gutterBottom
+                        id='resultZ'
+                        >           
+                        {this.state.zTotal}             
                       </Typography>
                     </FormControl>                    
                     </div>                  
