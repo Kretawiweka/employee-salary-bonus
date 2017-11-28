@@ -1,0 +1,6 @@
+Rule 1 : Jika masa kerja baru dan gaji sedikit maka bonus sedikit
+Rule 2 : Jika masa kerja baru dan gaji banyak maka bonus sedikit
+Rule 3 : Jika masa kerja sedang dan gaji sedikit maka bonus sedikit
+Rule 4 : Jika masa kerja sedang dan gaji banyak maka bonus banyak
+Rule 5 : Jika masa kerja lama dan gaji sedikit maka bonus banyak
+Rule 6 : Jika masa kerja lama dan gaji banyak maka bonus banyak

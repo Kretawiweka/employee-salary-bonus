@@ -31,7 +31,7 @@ function Navbar(props) {
           <IconButton aria-label="Share">
               <Work style={{ color:"white" }}/>
           </IconButton>
-          <Typography type="title" color="inherit" align="">
+          <Typography type="title" color="inherit">
             Employee Salary Bonus (Fuzy Tsukamoto Algorithm)
           </Typography>
         </Toolbar>
