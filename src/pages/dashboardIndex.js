@@ -1,5 +1,3 @@
-// @flow weak
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { 
@@ -12,9 +10,12 @@ import {
   FormControl,
   TextField,
 } from 'material-ui';
-import EmployeImage from '../static/images/employee.jpg';
+import EmployeImage from '../static/images/employee-google.jpg';
 import 'typeface-roboto'
 import Navbar from './components/Navbar';
+import imageKurvaBonus from '../static/images/kurva-bonus.png';
+import imageKurvaGaji from '../static/images/kurva-gaji.png';
+import imageMasaKerja from '../static/images/masa-kerja.png';
 
 const styles = {
   card: {
@@ -46,7 +47,19 @@ class DashboardIndex extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      zTotal: ''
+      zTotal: '',
+      alfaR1: '',
+      zR1: '',
+      alfaR2: '',
+      zR2: '',
+      alfaR3: '',
+      zR3: '',
+      alfaR4: '',
+      zR4: '',
+      alfaR5: '',
+      zR5: '',
+      alfaR6: '',
+      zR6: ''
     }
   }
 
@@ -58,7 +71,19 @@ class DashboardIndex extends React.Component{
 
   handleReset = () => {
     this.setState({
-      zTotal: ''
+      zTotal: '',
+      alfaR1: '',
+      zR1: '',
+      alfaR2: '',
+      zR2: '',
+      alfaR3: '',
+      zR3: '',
+      alfaR4: '',
+      zR4: '',
+      alfaR5: '',
+      zR5: '',
+      alfaR6: '',
+      zR6: ''
     })
   }
 
@@ -66,27 +91,24 @@ class DashboardIndex extends React.Component{
     event.preventDefault();    
     var masaKerja = this.state.masaKerja;
     var gajiPegawai = this.state.gajiPegawai;
-    this.setState({
-      zTotal: 10000
-    })
     this.fuzzyTsukamotoAlgorithm(masaKerja, gajiPegawai);
   }
 
   fuzzyTsukamotoAlgorithm(masaKerja, gajiPegawai){
-    console.log('Masa Kerja: '+masaKerja+' || Gaji Pegawai: '+gajiPegawai)
-    var miu1 = this.miuRule1(masaKerja, gajiPegawai);
-    var z1 = this.zRule1(miu1);
-    var miu2 = this.miuRule2(masaKerja, gajiPegawai);
-    var z2 = this.zRule2(miu2);
-    var miu3 = this.miuRule3(masaKerja, gajiPegawai);
-    var z3 = this.zRule3(miu3);
-    var miu4 = this.miuRule4(masaKerja, gajiPegawai);
-    var z4 = this.zRule4(miu4);
-    var miu5 = this.miuRule5(masaKerja, gajiPegawai);
-    var z5 = this.zRule5(miu5);
-    var miu6 = this.miuRule6(masaKerja, gajiPegawai);
-    var z6 = this.zRule6(miu6);
-    var zTotalResult = this.zTotal(miu1, miu2, miu3, miu4, miu5, miu6, z1, z2, z3, z4, z5, z6);
+    // console.log('Masa Kerja: '+masaKerja+' || Gaji Pegawai: '+gajiPegawai)
+    var alfa1 = this.alfaRule1(masaKerja, gajiPegawai);
+    var z1 = this.zRule1(alfa1);
+    var alfa2 = this.alfaRule2(masaKerja, gajiPegawai);
+    var z2 = this.zRule2(alfa2);
+    var alfa3 = this.alfaRule3(masaKerja, gajiPegawai);
+    var z3 = this.zRule3(alfa3);
+    var alfa4 = this.alfaRule4(masaKerja, gajiPegawai);
+    var z4 = this.zRule4(alfa4);
+    var alfa5 = this.alfaRule5(masaKerja, gajiPegawai);
+    var z5 = this.zRule5(alfa5);
+    var alfa6 = this.alfaRule6(masaKerja, gajiPegawai);
+    var z6 = this.zRule6(alfa6);
+    var zTotalResult = this.zTotal(alfa1, alfa2, alfa3, alfa4, alfa5, alfa6, z1, z2, z3, z4, z5, z6);
     this.setState({
       zTotal: zTotalResult
     })
@@ -96,143 +118,208 @@ class DashboardIndex extends React.Component{
   masaKerjaBaru = (masaKerja) =>{
     let a = 2;
     let b = 5;
+    let returnValue;
      if(masaKerja<a){
-        return 1;
+      returnValue = 1;
      }
      else if(masaKerja>b){
-        return 0;
+      returnValue = 0;
      }
      else{
-      return ((b-masaKerja)/(b-a));
+      returnValue = ((b-masaKerja)/(b-a)) ;
      }
+     console.log('masa kerja baru :'+returnValue);
+     return returnValue;
   }
   masaKerjaSedang = (masaKerja) => {
     let a = 3;
     let b = 5;
     let c = 7;
+    let returnValue;
     if(masaKerja<a || masaKerja>c){
-      return 0;
+      returnValue = 0;
     } 
     else if(masaKerja>=a && masaKerja<=b){
-      return ((masaKerja-a)/(b-a));
+      returnValue = ((masaKerja-a)/(b-a));
     } 
     else{
-      return ((c-masaKerja)/(c-b));
-    }  
+      returnValue = ((c-masaKerja)/(c-b));
+    }      
+    console.log('masa kerja sedang: '+returnValue);
+    return returnValue;    
   }
   masaKerjaLama = (masaKerja) => {
     let a = 5;
     let b = 8;
+    let returnValue;
      if(masaKerja<a){
-        return 1;
+        returnValue = 1;
      }
      else if(masaKerja>b){
-        return 0;
+        returnValue = 0;
      }
      else{
-      return ((b-masaKerja)/(b-a));
+      returnValue = ((b-masaKerja)/(b-a));
      }
+     console.log('masa kerja lama: '+returnValue);
+     return returnValue;
   }
   //gaji pegawai
   gajiPegawaiSedikit = (gaji) => {
     let a = 2000000;
     let b = 4000000;
+    let returnValue;
      if(gaji<a){
-        return 1;
+        returnValue = 1;
      }
      else if(gaji>b){
-        return 0;
+        returnValue = 0;
      }
      else{
-      return ((b-gaji)/(b-a));
+      returnValue = (b-gaji)/(b-a);
      }    
+     console.log('gaji pegawai sedikit: '+returnValue);
+     return returnValue;
   }
   gajiPegawaiBanyak = (gaji) => {
     let a = 3000000;
     let b = 5000000;
+    let returnValue;
      if(gaji<a){
-        return 1;
+        returnValue = 1;
      }
      else if(gaji>b){
-        return 0;
+        returnValue = 0;
      }
      else{
-      return ((b-gaji)/(b-a));
+      returnValue = ((b-gaji)/(b-a));
      }
+     console.log('gaji pegawai banyak: '+returnValue);     
+     return returnValue
   }
 
   //rule function
   //Rule 1 : Jika masa kerja baru dan gaji sedikit maka bonus sedikit
-  miuRule1 = (masaKerja, gajiPegawai) => {
+  alfaRule1 = (masaKerja, gajiPegawai) => {
     let masaKerjaBaru = this.masaKerjaBaru(masaKerja);
-    console.log(masaKerjaBaru);
+    // console.log(masaKerjaBaru);
     let gajiPegawaiSedikit = this.gajiPegawaiSedikit(gajiPegawai);
-    console.log(gajiPegawaiSedikit)
-    return Math.min(masaKerjaBaru, gajiPegawaiSedikit);
+    // console.log(gajiPegawaiSedikit)
+    let alfa1 = Math.min(masaKerjaBaru, gajiPegawaiSedikit);
+    this.setState({
+      alfaR1: alfa1
+    });
+    return alfa1;
   }
   zRule1 = (x) => {
-    let gajiBanyak = 6000000;
-    let gajiSedikit = 3000000;
-    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
+    let bonusBanyak = 600000;
+    let bonusSedikit = 300000;
+    let z1 = bonusBanyak-(x*(bonusBanyak-bonusSedikit));
+    this.setState({
+      zR1: z1
+    });
+    return z1;
   }
   //Rule 2 : Jika masa kerja baru dan gaji banyak maka bonus sedikit
-  miuRule2 = (masaKerja, gajiPegawai) => {
+  alfaRule2 = (masaKerja, gajiPegawai) => {
     let masaKerjaBaru = this.masaKerjaBaru(masaKerja);
     let gajiPegawaiBanyak = this.gajiPegawaiBanyak(gajiPegawai);
-    return Math.min(masaKerjaBaru, gajiPegawaiBanyak);    
+    let alfa2 = Math.min(masaKerjaBaru, gajiPegawaiBanyak);
+    console.log('masa kerja baru: '+masaKerjaBaru+' gaji pegawai banyak: '+gajiPegawaiBanyak);
+    this.setState({
+      alfaR2: alfa2
+    });
+    return alfa2;    
   }
   zRule2 = (x) => {
-    let gajiBanyak = 6000000;
-    let gajiSedikit = 3000000;
-    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
+    let bonusBanyak = 600000;
+    let bonusSedikit = 300000;
+    let z2 = bonusBanyak-(x*(bonusBanyak-bonusSedikit));
+    this.setState({
+      zR2: z2
+    })
+    return z2;
   }
   //Rule 3 : Jika masa kerja sedang dan gaji sedikit maka bonus sedikit
-  miuRule3 = (masaKerja, gajiPegawai) => {
+  alfaRule3 = (masaKerja, gajiPegawai) => {
     let masaKerjaSedang = this.masaKerjaSedang(masaKerja);
     let gajiPegawaiSedikit = this.gajiPegawaiSedikit(gajiPegawai);
-    return Math.min(masaKerjaSedang, gajiPegawaiSedikit);
+    let alfa3 = Math.min(masaKerjaSedang, gajiPegawaiSedikit);
+    this.setState({
+      alfaR3: alfa3
+    })
+    return alfa3;
   }
   zRule3 = (x) => {
-    let gajiBanyak = 6000000;
-    let gajiSedikit = 3000000;
-    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
+    let bonusBanyak = 600000;
+    let bonusSedikit = 300000;
+    let z3 = bonusBanyak-(x*(bonusBanyak-bonusSedikit));
+    this.setState({
+      zR3: z3
+    })
+    return z3;
   }
   //Rule 4 : Jika masa kerja sedang dan gaji banyak maka bonus banyak
-  miuRule4 = (masaKerja, gajiPegawai) => {
+  alfaRule4 = (masaKerja, gajiPegawai) => {
     let masaKerjaSedang = this.masaKerjaSedang(masaKerja);
     let gajiPegawaiBanyak = this.gajiPegawaiBanyak(gajiPegawai);
-    return Math.min(masaKerjaSedang, gajiPegawaiBanyak); 
+    let alfa4 = Math.min(masaKerjaSedang, gajiPegawaiBanyak);
+    this.setState({
+      alfaR4: alfa4
+    })
+    return alfa4; 
   }
   zRule4 = (x) => {
-    let gajiBanyak = 6000000;
-    let gajiSedikit = 3000000;
-    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
+    let bonusBanyak = 600000;
+    let bonusSedikit = 300000;
+    let z4 = bonusSedikit+(x*(bonusBanyak-bonusSedikit));
+    this.setState({
+      zR4: z4
+    })
+    return z4;    
   }
   //Rule 5 : Jika masa kerja lama dan gaji sedikit maka bonus banyak
-  miuRule5 = (masaKerja, gajiPegawai) => {
-    let masaKerjaLama = this.masaKerjaSedang(masaKerja);
+  alfaRule5 = (masaKerja, gajiPegawai) => {
+    let masaKerjaLama = this.masaKerjaLama(masaKerja);
     let gajiPegawaiSedikit = this.gajiPegawaiSedikit(gajiPegawai);
-    return Math.min(masaKerjaLama, gajiPegawaiSedikit); 
+    let alfa5 = Math.min(masaKerjaLama, gajiPegawaiSedikit)
+    this.setState({
+      alfaR5: alfa5
+    })
+    return alfa5; 
   }
   zRule5 = (x) => {
-    let gajiBanyak = 6000000;
-    let gajiSedikit = 3000000;
-    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
+    let bonusBanyak = 600000;
+    let bonusSedikit = 300000;
+    let z5 = bonusSedikit+(x*(bonusBanyak-bonusSedikit));
+    this.setState({
+      zR5: z5
+    })
+    return z5;
   }
   //Rule 6 : Jika masa kerja lama dan gaji banyak maka bonus banyak
-  miuRule6 = (masaKerja, gajiPegawai) => {
-    let masaKerjaLama = this.masaKerjaSedang(masaKerja);
+  alfaRule6 = (masaKerja, gajiPegawai) => {
+    let masaKerjaLama = this.masaKerjaLama(masaKerja);
     let gajiPegawaiBanyak = this.gajiPegawaiBanyak(gajiPegawai);
-    return Math.min(masaKerjaLama, gajiPegawaiBanyak); 
+    let alfa6 = Math.min(masaKerjaLama, gajiPegawaiBanyak);
+    // console.log('masa kerja lama: '+masaKerjaLama+' gaji pegawai banyak: '+gajiPegawaiBanyak);
+    this.setState({
+      alfaR6: alfa6
+    })
+    return alfa6; 
   }
   zRule6 = (x) => {
-    let gajiBanyak = 6000000;
-    let gajiSedikit = 3000000;
-    return gajiBanyak-(x*(gajiBanyak-gajiSedikit));
+    let bonusBanyak = 600000;
+    let bonusSedikit = 300000;
+    let z6 = bonusSedikit+(x*(bonusBanyak-bonusSedikit));
+    this.setState({
+      zR6: z6
+    })
+    return z6;
   }
 
   zTotal = (miu1, miu2, miu3, miu4, miu5, miu6, z1, z2, z3, z4, z5, z6) => {
-    var zTotal = ((miu1*z1)+(miu2*z2)+(miu3*z3)+(miu4*z4)+(miu5*z5)+(miu6*z6))/(miu1+miu2+miu3+miu4+miu5+miu6);
+    var zTotal = ((miu1*z1)+(miu2*z2)+(miu3*z3)+(miu4*z4)+(miu5*z5)+(miu6*z6))/(miu1+miu2+miu3+miu4+miu5+miu6);    
     return zTotal;
   };
   
@@ -243,18 +330,100 @@ class DashboardIndex extends React.Component{
         <Navbar/>
         <Card className={classes.card}>
           <Grid container spacing={24}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={5}>
               <CardContent>
                   <img src={EmployeImage} alt="employe" className={classes.imageHeader} />
               </CardContent>       
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={7}>
               <CardContent>
                 <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
-                  It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                  Menghitung bonus gaji pegawai dengan menggunakan Algoritma Fuzzy Tsukamoto. Dengan menggunakan variabel masa kerja, kurva gaji, dan kurva bonus.
                 </Typography>
+                <Grid container spacing={24}>
+                  <Grid item xs={5}>
+                    <img src={imageMasaKerja} alt="masa kerja" className={classes.imageHeader} />
+                  </Grid>                  
+                  <Grid item xs={4}>
+                    <img src={imageKurvaGaji} alt="kurva gaji" className={classes.imageHeader} />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <img src={imageKurvaBonus} alt="kurva bonus" className={classes.imageHeader} />
+                  </Grid>
+                </Grid>
                 <hr/>
                 <Grid container spacing={24}>
+                  <Grid item xs={12} sm={12}>
+                    <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
+                      <b>Rule adalah aturan yang dipakai dalam menentukan besaran bonus, yaitu</b>                       
+                    </Typography>
+                    <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
+                      Rule 1 : Jika masa kerja baru dan gaji sedikit maka bonus sedikit
+                    </Typography>                    
+                    <Grid container spacing={24}>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Alfa R1 = {this.state.alfaR1}</h5>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Z R1 = {this.state.zR1}</h5>
+                      </Grid>                      
+                    </Grid>
+                    <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
+                      Rule 2 : Jika masa kerja baru dan gaji banyak maka bonus sedikit
+                    </Typography>
+                    <Grid container spacing={24}>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Alfa R2 = {this.state.alfaR2}</h5>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Z R2 = {this.state.zR2}</h5>
+                      </Grid>                      
+                    </Grid>
+                    <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
+                      Rule 3 : Jika masa kerja sedang dan gaji sedikit maka bonus sedikit
+                    </Typography>
+                    <Grid container spacing={24}>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Alfa R3 = {this.state.alfaR3}</h5>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Z R3 = {this.state.zR3}</h5>
+                      </Grid>                      
+                    </Grid>
+                    <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
+                      Rule 4 : Jika masa kerja sedang dan gaji banyak maka bonus banyak
+                    </Typography>
+                    <Grid container spacing={24}>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Alfa R4 = {this.state.alfaR4}</h5>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Z R4 = {this.state.zR4}</h5>
+                      </Grid>                      
+                    </Grid>
+                    <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
+                      Rule 5 : Jika masa kerja lama dan gaji sedikit maka bonus banyak
+                    </Typography>
+                    <Grid container spacing={24}>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Alfa R5 = {this.state.alfaR5}</h5>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Z R5 = {this.state.zR5}</h5>
+                      </Grid>                      
+                    </Grid>
+                    <Typography type="subheading" gutterBottom color="inherit" className={classes.textContent}>
+                      Rule 6 : Jika masa kerja lama dan gaji banyak maka bonus banyak
+                    </Typography> 
+                    <Grid container spacing={24}>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Alfa R6 = {this.state.alfaR6}</h5>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <h5>Z R6 = {this.state.zR6}</h5>
+                      </Grid>                      
+                    </Grid>
+                  </Grid>
                   <Grid item xs={12} sm={6}>
                     <form className={classes.form} onSubmit={this.handleSubmit.bind(this)}>
                       <FormControl fullWidth className={classes.formControl}>
@@ -294,7 +463,7 @@ class DashboardIndex extends React.Component{
                       <Grid container spacing={24}>
                         <Grid item xs={12} sm={6}>
                           <FormControl fullWidth style={{marginTop: '10px'}}>
-                            <Button raised color="accent">
+                            <Button raised color="accent" onClick={this.handleReset.bind(this)}>
                               Reset
                             </Button>
                           </FormControl>
