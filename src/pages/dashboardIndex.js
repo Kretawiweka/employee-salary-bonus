@@ -153,13 +153,13 @@ class DashboardIndex extends React.Component{
     let b = 8;
     let returnValue;
      if(masaKerja<a){
-        returnValue = 1;
-     }
-     else if(masaKerja>b){
         returnValue = 0;
      }
+     else if(masaKerja>b){
+        returnValue = 1;
+     }
      else{
-      returnValue = ((b-masaKerja)/(b-a));
+      returnValue = ((masaKerja-a)/(b-a));
      }
      console.log('masa kerja lama: '+returnValue);
      return returnValue;
@@ -186,10 +186,10 @@ class DashboardIndex extends React.Component{
     let b = 5000000;
     let returnValue;
      if(gaji<a){
-        returnValue = 1;
+        returnValue = 0;
      }
      else if(gaji>b){
-        returnValue = 0;
+        returnValue = 1;
      }
      else{
       returnValue = ((b-gaji)/(b-a));
